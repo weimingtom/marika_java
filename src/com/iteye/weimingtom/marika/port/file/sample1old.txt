@@ -1,0 +1,122 @@
+﻿; 实例脚本
+;
+;	Copyright (c) Chihiro.SAKAMOTO (HyperWorks)
+;
+;
+; 分支实例1
+;
+;　- 持续产生分支的实例
+;
+
+text
+请选择
+.
+
+menu result
+　Ａ
+　Ｂ
+end
+
+if result == 1 then		; A
+text
+请选择
+.
+menu result
+　Ｃ
+　Ｄ
+end
+
+if result == 1 then		; A-C
+text
+请选择
+.
+menu result
+　Ｇ
+　Ｈ
+end
+if result == 1 then		; A-C-G
+text
+您选择了Ａ－Ｃ－Ｇ
+.
+
+else				; A-C-H
+text
+您选择了Ａ－Ｃ－Ｈ
+.
+
+endif
+
+else				; A-D
+text
+请选择
+.
+menu result
+　Ｉ
+　Ｊ
+end
+if result == 1 then		; A-D-I
+text
+您选择了Ａ－Ｄ－Ｉ
+.
+
+else				; A-D-J
+text
+您选择了Ａ－Ｄ－Ｊ
+.
+
+endif
+
+endif
+
+else				; B
+text
+请选择
+.
+menu result
+　Ｅ
+　Ｆ
+end
+if result == 1 then		; B-E
+text
+请选择
+.
+menu result
+　Ｋ
+　Ｌ
+end
+
+if result == 1 then		; B-E-K
+text
+您选择了Ｂ－Ｅ－Ｋ
+.
+
+else				; B-E-L
+text
+您选择了Ｂ－Ｅ－Ｌ
+.
+
+endif
+
+else				; B-F
+text
+请选择
+.
+menu result
+　Ｍ
+　Ｎ
+end
+if result == 1 then		; B-F-M
+text
+您选择了Ｂ－Ｆ－Ｍ
+.
+
+else				; B-F-N
+text
+您选择了Ｂ－Ｆ－Ｎ
+.
+
+endif
+
+endif
+
+endif

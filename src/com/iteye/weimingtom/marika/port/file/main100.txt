@@ -1,0 +1,33 @@
+;
+; 程序码（主菜单）
+;
+;　Copyright(C) 2002 Chihiro SAKAMOTO
+;
+
+;　设定为系统模式
+;　这样的话，主菜单就没有办法存储了
+mode system
+
+;　读取标题画面
+load bg title001
+wipein 2
+
+*mainloop
+
+;　显示主菜单
+menu result
+重头开始游戏
+继续之前的存档纪录
+结束
+end
+
+if result == 1 then			;　 从头开始
+  system clear				;　　清除参数
+  exec start				;　　读取start.scr
+else if result == 2 then		;　从中间开始
+  system load				;　　打开下载画面
+else if result == 3 then		;　结束
+  system exit				;　　结束应用程序
+endif
+
+goto mainloop

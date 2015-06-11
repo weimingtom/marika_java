@@ -1,0 +1,779 @@
+; 实例程序码
+;
+;	Copyright (c) Chihiro.SAKAMOTO (HyperWorks)
+;
+;	程序码作者　 Chihiro SAKAMOTO
+;	CG作者　　　Takashi MIYASAKA 
+;
+;	本程序码为ScrPlayer的实例。
+;	※本程序法中使用的任何素材都受到著作权法的保护。
+;
+;	一般而言，注释的内容都与故事有关。
+;	本程序码是说明程序执行动作用的实例，因此，注释的部分会说明
+;	程序码的执行动作。
+;
+;	请在实际执行程序的同时，搭配参考注释的说明。
+;	来源档上的位置，可以从对白中瞭解。
+;
+
+;　画面中已出现标题，因此把画面消去。
+wipeout 1
+
+;　与背景一起读进内存中。
+load bg bg001
+
+;　予以显示。在这里使用淡入（fade in）的显示效果
+fadein
+
+;　文字“对白”的显示
+
+text
+　现在已经到了学校，接下来该怎么做呢？
+.
+
+;　重叠的读取（中央）
+load c sino211
+
+;　更新显示
+;　指定over，显示画面瞬间就改变了。
+update over
+
+text
+阿忍
+“怎么了？”
+.
+
+text
+“执行之后，就变成这个画面了”
+.
+
+;　重叠的读取（改变表情）
+load c sino213
+
+;　指定new 显示画面就会即刻改变。
+update now
+
+text
+阿忍
+“说到执行……，我可不是盖的………”
+.
+
+load c sino211
+update now
+
+text
+阿忍
+“莫非是要问程序码的事？”
+.
+
+text
+“正是如此”
+.
+
+;　这时要改变姿势，所以指定over来改变
+load c sino111
+update over
+
+text
+阿忍
+“不嫌弃的话，我很乐意为你说明。”
+.
+
+; 出现菜单
+
+menu result
+那就拜托你了
+不用你操心
+end
+
+; 菜单的选择结果进入到result中
+;  那就拜托你了= 1
+;  不用你操心  = 2
+
+;
+; 不需要说明时，会分歧到别的路径
+;
+if result == 2 goto yameru
+
+text
+“那就麻烦您啰！”
+.
+
+load c sino211
+update over
+
+text
+阿忍
+“是的，讲得不好的话还请多多包涵。”
+.
+
+load c sino111
+update over
+
+text
+阿忍
+“首先，现在这个是 menu 指令。”
+.
+
+text
+阿忍
+“像这样，使用于要分歧的时候”
+.
+
+load c sino311
+update over
+
+text
+阿忍
+“text 是用以显示这里出现的对白或读白的指令。
+　已经使用过很多次了，应该明白了才是”
+.
+
+text
+阿忍
+“接下来介绍CG的读取与显示，这个部分要使用 load 与 update 指令。
+　这个指令也是一样用过很多次了，不过还是再为您说明一下。”
+.
+
+load c sino312
+update now
+
+text
+阿忍
+“load 可以个别指定与背景重叠，因此搭配使用。只有 load 的话，
+显示画面是不会改变的，所以最后请以 update 指令来将画面予以显示。”
+.
+
+load c sino111
+update over
+
+text
+阿忍
+“那么，就来试试看如何在不同地点间移动”
+.
+
+;　只改变背景
+load bgo bg002
+
+; 如果是全面的改变，update与wipein, cutin等都可以达到相同的效果
+wipein 2
+
+text
+阿忍
+“我们已经改变了背景了。”
+.
+
+text
+阿忍
+“如果要在地点间移动的话，………”
+.
+
+;　读取整个画面的重叠CG
+;　使用于全画面的大小，使用的CG没有办法表现两个人站著、
+;　以及背景使用相同东西时。
+load over mesi111
+update wipe
+
+text
+阿惠
+“阿忍，你在做什么呀？”
+.
+
+;
+; 摇晃画面
+;
+shake
+
+;
+; 发出音效
+;
+sound a5_04108
+
+text
+阿忍
+“啊！”（状声词，可配合画面动作找更合适的词）
+.
+
+;　重叠的边更（使出现两个人）
+;　左边读入阿忍，右边读入阿惠，同时更新显示画面
+load l sino413
+load r megu313
+update over
+
+text
+阿忍
+“阿惠，好痛啊……好痛……”
+.
+
+load r megu213
+update over
+
+text
+阿惠
+“你的说明我们都听清楚了”
+.
+
+load l sino411
+load r megu211
+update over
+
+text
+阿惠
+“像现在这样，无法显示站著的人物时，就要用 overlap 来重叠！”
+.
+
+text
+“光这样说，好像在打马虎眼，想随便混过，是不？”
+.
+
+;　只改变右侧（阿惠）
+load r megu212
+update now
+
+text
+阿惠
+“这…这个嘛………” 
+.
+
+text
+‘看来我是说中了吧！’
+.
+
+load r megu111
+update over
+
+text
+阿惠
+“阿忍，你不是要去参加社团活动吗？”
+.
+
+load l sino211
+update now
+
+text
+阿忍
+“已经这么晚了？”
+.
+
+load r megu211
+update over
+
+text
+阿惠
+“那么，接下来的画面就会移到体育馆”
+.
+
+;　使用淡出（Fade Out）的方式以表示地点间的移动。
+;
+fadeout
+
+load bg bg003
+fadein
+
+text
+………………
+.
+
+text
+………………………
+.
+
+text
+………………………………
+.
+
+text
+………………………………………………
+.
+
+text
+“你怎么那么慢啊！”
+.
+
+load l sino222
+update wipe
+
+text
+阿忍
+“不好意思，让你久等了”
+.
+
+load r megu121
+update wipe
+
+text
+阿惠
+“让你久等了”
+.
+
+load l sino221
+update now
+
+text
+阿忍
+“像这样只是换衣服而已的话，可以先准备好服装的CG，再在程序中
+予以重叠。这样比较麻烦，所以这次我们准备的是已经重叠好的CG”
+.
+
+load r megu321
+update over
+
+text
+阿惠
+“这时，没有衣服的CG会在下层……”
+.
+
+load r megu321
+update now
+
+text
+阿惠
+“真是可惜呢！”
+.
+
+text
+“嗯！的确很可惜！”
+.
+
+load l sino223
+update now
+
+text
+阿忍
+“………………”
+.
+
+text
+“接下来还要介绍什么呢？”
+.
+
+load r megu223
+update over
+
+text
+阿惠
+“当然是BGM啰！”
+.
+
+load l sino322
+update over
+
+text
+阿忍
+“BGM的效果需要有音乐CD”
+.
+
+menu result
+CD的话，我有
+现在没带在身上
+end
+
+if result == 1 then
+;
+; 有CD的话
+;
+
+load r megu323
+update over
+
+text
+阿惠
+“我可不要古典乐喔，会想睡觉…”
+.
+
+load l sino323
+update now
+
+text
+阿忍
+‘只有你才会想睡………’
+.
+
+text
+阿惠
+“西洋音乐的话听不懂歌词，动画主题曲的话，如果没有看过那个动画……”
+.
+
+text
+“你真是够了！！”
+.
+
+load l sino423
+update over
+
+text
+阿忍
+“你可以用你自己喜欢的CD，请放到CD-ROM光盘机内”
+.
+
+load r megu121
+update over
+
+text
+阿惠
+“啊～、如果CD Player开始放的话，要先关闭；还有，如果在菜单的设定中，
+BGM 是 OFF 的话，也要设定为ON 喔！”
+.
+
+;　这是播放音乐的指令
+;　我们可以用音轨编号来指定要播放的音乐，如果是MIXED-CD的话，
+;　盘一音轨曲目就是数据领域了，因此音轨编号－１就是music 指令的指定。
+;　指定music 1会播放盘二音轨（MIXED-CD的话是盘一１曲目）
+;　一般的音乐CD的话，则会播放盘２曲目，这点要请您注意。.
+
+music 1
+
+;　设定变量
+;　为了之后停止播放音乐，要先在旗标（Flag）中记忆“已播放”。
+set music = 1
+
+load r megu221
+update over
+
+text
+阿惠
+“如何？只要指定盘几曲目即可，是不是很简单呀！”
+.
+
+;　else 以后的内容，要在if叙述为“伪”的时候才会执行
+
+else
+
+;
+; 没有CD的话
+;
+load r megu323
+update over
+
+text
+阿惠
+“那么，这个部分就跳过啰！”
+.
+
+endif
+
+;
+; endif以后的内容是共通的
+;
+load l sino122
+update over
+
+text
+阿忍
+“接下来是‘画面效果’。这是……”
+.
+
+load r megu322
+update now
+
+text
+阿惠
+“杀人SPIKE！”
+.
+
+;　摇晃
+;　摇晃与闪烁是单独使用的指令
+;　并不会影响到内存上的CG
+shake
+
+;
+; 发出音效。参数即为文件名称
+;
+sound a5_04105
+
+text
+“咦！”
+.
+
+load r megu123
+update over
+
+text
+阿惠
+“看清楚了吗？”
+.
+
+text
+“这…这是什么！”
+.
+
+load r megu322
+update over
+
+text
+阿惠
+‘没看清楚的话，我们再来一次’
+.
+
+text
+阿惠
+“杀人SPIKE！”
+.
+
+shake
+sound a5_04121
+
+text
+“哇！！！”
+.
+
+text
+“等等，总觉得前面两个字不太妥…’
+.
+
+load l sino323
+update over
+
+text
+阿忍 
+“阿惠，不要随便动人家排球社的用具…”
+.
+
+text
+“这有什么问题吗？”
+.
+
+load r megu223
+update over
+
+text
+阿惠
+“唉呀呀呀，这种事情不体验一下的话…”
+.
+
+load r megu221
+update now
+
+text
+阿惠
+“现在这个就是以‘摇动’来下shake指令的效果”
+.
+
+text
+阿惠
+“接下来就介绍‘闪烁’，即flash指令的使用方法”
+.
+
+load r megu123
+update over
+
+text
+阿惠
+“啊！”
+.
+
+;　闪烁
+flash
+sound a5_04107
+
+text
+“好痛！”
+.
+
+load l sino222
+update over
+
+text
+阿惠
+“啦啦啦！”
+
+.
+
+;
+; 要增加闪烁次数时反覆执行即可。
+;
+flash
+flash
+sound a5_04108
+
+text
+“好痛好痛”
+.
+
+text
+阿惠
+“啦啦啦啦！”
+.
+
+flash
+flash
+flash
+sound a5_04107
+
+text
+“好痛好痛啊！”
+.
+
+load l  sino224
+update now
+
+text
+阿忍
+“锵！” 
+.
+
+load r megu122
+update now
+
+text
+阿惠
+“啊…………”
+.
+
+load l sino223
+update now
+
+text
+阿忍
+“将排球社的用具…………”
+.
+
+;　事件CG
+;　在读取一张图的事件CG时，用与背景相同的处理方式
+;　也就是说，读取的指示设定为 bg 
+load bg event1
+wipein 2
+
+text
+阿忍
+“不是叫你不要随便拿吗！”
+.
+
+flash
+sound a5_10314
+
+text
+阿惠
+“啊～～～～！”
+.
+
+;　整个情节结束之前，要进行善后工作
+;　将画面消去，将音乐停止
+
+fadeout
+
+if music != 0 then
+;　这里只有音乐开始播放时才会出现
+;　停下音乐
+	stopm
+endif
+
+; 整个剧情结束
+; end也可以在整个剧情的中途中使用
+end
+
+;
+;　故事分歧的实例
+;
+; 在盘一个分歧点中选择“不用你操心”的话，则会到这个画面
+;
+*yameru
+
+load c sino113
+update now
+
+text
+阿忍
+“是这样的吗………”
+.
+
+;
+;　要将重叠人物消去时，要像这样使用clear
+;
+clear c
+update wipe
+
+text
+“我这样说是不是有点……算了，不管了”
+.
+
+fadeout
+
+load bg bg002
+fadein
+
+text
+“进入到里面，也没有半个人影………”
+.
+
+load c megu111
+update wipe
+
+text
+“咦！真的没有人吗？”
+.
+
+text
+阿惠
+“你在这里干什么？”
+.
+
+text
+“我想瞭解一下程序码…”
+.
+
+load c megu113
+update now
+
+text
+阿惠
+“那我可以教你呀！”
+.
+
+text
+阿惠
+“之前我不是也教过你们？”
+.
+
+text
+“这样的话，问你好了………”
+.
+
+load c megu211
+update over
+
+text
+阿惠
+“那个时候确实曾在“淡出”的说明中…………”
+.
+
+load c megu213
+update now
+
+text
+阿惠
+“我的脖子就这样………”
+.
+
+text
+“好…好难过………”
+.
+
+;　淡出变成白色
+whiteout
+
+text
+阿惠
+“这样一来，眼前就便成一片白色了………”
+.
+
+text
+阿惠
+“啊………，喂………”
+.
+
+text
+阿惠
+“还是一样…”
+.
+
+text
+阿惠
+“………我还是来一趟旅行好了，………嗯，就这么决定………”
+.
+
+text
+				完
+.
+
+end

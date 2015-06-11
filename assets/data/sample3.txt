@@ -1,0 +1,298 @@
+﻿; 实例脚本
+;
+;	Copyright (c) Chihiro.SAKAMOTO (HyperWorks)
+;
+;
+; 分支实例3
+;
+;　·全部要尝试的实例
+;　　在学校里走来走去，碰到人就问话
+;　　直到走遍所走地方
+;
+
+;　读取学校外面的背景
+wipeout 1
+load bg bg001
+wipein 1
+
+;　变量初始化
+;　变量的初始值应该都是0，但是为了谨慎自己初始化
+
+floor1 = 0		; １楼去过了吗？
+floor2 = 0		; ２楼去过了吗？
+gymnasium = 0	; 体育馆楼去过了吗？
+courtyard = 0	; 中庭楼去过了吗？
+counter = 0		; 行动计数器
+bg = 1			; 现在读取的背景
+
+text
+「总算到学校了，在这里打听些情报吧」
+.
+
+text
+「似乎现在还很早，没碰到多少人……」
+.
+
+*LOOP			; 不断重复执行这一段
+
+text
+「要去哪里好呢？」
+.
+
+menu result
+学校的２楼
+学校的１楼
+体育馆
+中庭
+end
+
+if result == 1 then				; 学校的２楼
+
+if floor2 != 0 then
+
+text
+「２楼已经去过了啦！
+　去别的地方吧」
+.
+
+else
+
+; 背景改为校舍内
+fadeout
+load bg bg002
+fadein
+bg = 2
+
+text
+「这里是２楼」
+.
+
+text
+「有谁在呢……」
+.
+
+text
+「啊，有了有了……
+　对不起～」
+.
+
+load c sino211
+update over
+
+text
+女孩子
+「你有什么事吗？」
+.
+
+text
+「嗯，我想要问一些问题，可以吗？」
+.
+
+text
+女孩子
+「嗯？想要问什么呢？」
+.
+
+text
+「其实是………………………这样啦」
+.
+
+load c sino412
+update over
+
+text
+女孩子
+「如果是这样，那应该是………………………喔」
+.
+
+text
+「是………………………对吧？」
+.
+
+text
+女孩子
+「嗯，是………………………没错」
+.
+
+text
+「谢谢」
+.
+
+clear c
+update over
+
+floor2 = 1		; ２楼去过了
+counter +1		; 递增行动计数器
+
+endif
+
+else if result == 2 then			; 学校的１楼
+
+if floor1 != 0 then
+
+text
+「１楼已经去过了啦！
+　去别的地方吧」
+.
+
+else
+
+; 背景改为校舍内
+fadeout
+load bg bg002
+fadein
+bg = 2
+
+text
+「这里是１楼」
+.
+
+text
+「好像没有人在耶」
+.
+
+text
+「还是去其他地方看看吧」
+.
+
+floor1 = 1		; １楼去过了
+counter +1		; 递增行动计数器
+
+endif
+
+else if result == 3 then			; 体育馆
+
+if gymnasium != 0 then
+
+text
+「体育馆已经去过了啦！
+　去别的地方吧」
+.
+
+else
+
+fadeout
+load bg bg003
+fadein
+bg = 3
+
+text
+「这里是体育馆」
+.
+
+text
+「会有人在吗……」
+.
+
+text
+「啊，有了有了……
+　对不起～」
+.
+
+load c megu221
+update over
+
+text
+女孩子
+「啊？什么？」
+.
+
+text
+「嗯，我想要问一些问题，可以吗？」
+.
+
+load c megu223
+update now
+
+text
+女孩子
+「新人的搭讪？ 现在已经不流行这一套啰」
+.
+
+text
+「不是这样啦，
+　我想问的是………………………」
+.
+
+load c megu222
+update now
+
+text
+女孩子
+「这，这样啊，
+　我想应该是………………………吧？」
+.
+
+text
+「谢谢」
+.
+
+clear c
+update over
+
+gymnasium = 1	; 体育馆去过了
+counter +1		; 递增行动计数器
+
+endif
+
+else if result == 4 then			; 中庭
+
+if courtyard != 0 then
+
+text
+「中庭已经去过了啦！
+　去别的地方吧」
+.
+
+else
+
+if bg != 1 then			; 背景已经是中庭时，则不移动
+
+fadeout
+load bg bg001
+fadein
+bg = 1
+
+endif
+
+text
+「这里是中庭」
+.
+
+text
+「会有人在吗……」
+.
+
+text
+「好像没有人……」
+.
+
+text
+「还是去其他地方看看吧」
+.
+
+courtyard = 1	; 中庭去过了
+counter +1		; 递增行动计数器
+
+endif
+
+endif
+
+if counter < 4 goto LOOP
+
+;　所有地方都去过了
+
+if bg != 1 then			; 背景不是中庭时，移到中庭
+
+fadeout
+load bg bg001
+fadein
+
+endif
+
+text
+「那么，已经绕过一圈也得到情报了，就回去吧」
+.
+
+wipeout 1
+end

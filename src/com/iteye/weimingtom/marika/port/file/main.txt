@@ -1,0 +1,38 @@
+﻿; 主菜单--Main Menu
+;
+;　设定为系统模式
+;　这样的话，主菜单就没有办法存储了
+mode system
+
+;　读取标题画面
+load bg title001
+wipein 1
+
+*mainloop
+
+;　显示主菜单
+menu result
+分岐实例1
+分岐实例2
+分岐合流实例
+回圈(Loop)实例
+结束
+end
+
+if result == 1 then
+  system clear
+  exec sample1old
+else if result == 2 then
+  system clear
+  exec sample1
+else if result == 3 then
+  system clear
+  exec sample2
+else if result == 4 then
+  system clear
+  exec sample3
+else if result == 5 then
+  system exit
+endif
+
+goto mainloop
