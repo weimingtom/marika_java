@@ -4,6 +4,8 @@ import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 
 public class MarikaFile {
+	public final static boolean USE_LAZY_LOAD = true;
+	
 	private MarikaResource res;
 	private String mFilename;
 	private boolean isOK = false;
@@ -24,9 +26,23 @@ public class MarikaFile {
 	private boolean open(String file) {
 		//FIXME:ADD
 		//添加，方便调试
+		MarikaLog.trace("MarikaFile::open():" + file);
 		this.mFilename = file;
 		if (MarikaResource.USE_CACHE) {
 			mImage = res.imageMap.get(file);
+			if (USE_LAZY_LOAD) {
+				//FIXME:
+				if (!file.endsWith(".txt") && !file.endsWith(".scr")) {
+					if (mImage == null) {
+						res.loadImage(file, file + ".jpg");
+						mImage = res.imageMap.get(file);
+					}
+					if (mImage == null) {
+						res.loadImage(file, file + ".png");
+						mImage = res.imageMap.get(file);					
+					}
+				}
+			}
 		} else {
 			mImage = res.loadImageNoCache(file);
 		}

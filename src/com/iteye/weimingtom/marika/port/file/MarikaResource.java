@@ -9,6 +9,7 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -102,6 +103,7 @@ public class MarikaResource {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		dumpImageCacheInfo();
 	}
 	
 	public BufferedImage loadImageNoCache(String name) {
@@ -148,8 +150,12 @@ public class MarikaResource {
 	public void loadImage(String name, String path) {
 		imagePathMap.put(name, path);
 		if (USE_CACHE) {
-			imageMap.put(name, loadImageNoCache(name));
+			BufferedImage img = loadImageNoCache(name);
+			if (img != null) {
+				imageMap.put(name, img);
+			}
 		}
+		dumpImageCacheInfo();
 	}
 	
 	public void loadClassData(String name, Class<?> cls) {
@@ -216,5 +222,23 @@ public class MarikaResource {
 		imageMap.clear();
 		dataMap.clear();
 		textMap.clear();
+		dumpImageCacheInfo();
+	}
+	
+	private void dumpImageCacheInfo() {
+		MarikaLog.traceMemory("MarikaResource::dumpImageCacheInfo():imageMap.size == " + imageMap.size());
+		long byteSize = 0;
+		for (Entry<String, BufferedImage> entry : imageMap.entrySet()) {
+			BufferedImage img = entry.getValue();
+			int imgW = 0;
+			int imgH = 0;
+			if (img != null) {
+				imgW = img.getWidth();
+				imgH = img.getHeight();
+			}
+			byteSize = imgW * imgH * 4;
+			MarikaLog.traceMemory("====> key : " + entry.getKey() + ", bitmap : " + imgW + "x" + imgH);
+		}
+		MarikaLog.traceMemory("MarikaResource::dumpImageCacheInfo():total byte size == " + byteSize);
 	}
 }

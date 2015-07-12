@@ -12,7 +12,7 @@ import com.iteye.weimingtom.marika.port.file.MarikaFile;
 import com.iteye.weimingtom.marika.port.file.MarikaLog;
 import com.iteye.weimingtom.marika.port.file.MarikaResource;
 
-public class MarikaImage {	
+public class MarikaImage {
 	public BufferedImage mImage;
 	private MarikaResource mRes;
 	

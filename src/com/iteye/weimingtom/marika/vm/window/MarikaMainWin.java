@@ -13,6 +13,7 @@ import com.iteye.weimingtom.marika.model.MarikaRectangle;
 import com.iteye.weimingtom.marika.port.audio.MarikaCDAudio;
 import com.iteye.weimingtom.marika.port.audio.MarikaMci;
 import com.iteye.weimingtom.marika.port.audio.MarikaWaveOut;
+import com.iteye.weimingtom.marika.port.file.MarikaFile;
 import com.iteye.weimingtom.marika.port.file.MarikaLog;
 import com.iteye.weimingtom.marika.port.file.MarikaResource;
 import com.iteye.weimingtom.marika.port.image.MarikaFont;
@@ -404,68 +405,70 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 			makeScript2.close();
 			res.loadBytes("data/start.scr", bytes2);
 		}
-		res.loadImage("cgdata/bg001", "cgdata/bg001.jpg");
-		res.loadImage("cgdata/bg002", "cgdata/bg002.jpg");
-		res.loadImage("cgdata/bg003", "cgdata/bg003.jpg");
-		
-		res.loadImage("cgdata/megu111", "cgdata/megu111.png");
-		res.loadImage("cgdata/megu112", "cgdata/megu112.png");
-		res.loadImage("cgdata/megu113", "cgdata/megu113.png");
-		res.loadImage("cgdata/megu121", "cgdata/megu121.png");
-		res.loadImage("cgdata/megu122", "cgdata/megu122.png");
-		res.loadImage("cgdata/megu123", "cgdata/megu123.png");
-		res.loadImage("cgdata/megu211", "cgdata/megu211.png");
-		res.loadImage("cgdata/megu212", "cgdata/megu212.png");
-		res.loadImage("cgdata/megu213", "cgdata/megu213.png");
-		res.loadImage("cgdata/megu221", "cgdata/megu221.png");
-		res.loadImage("cgdata/megu222", "cgdata/megu222.png");
-		res.loadImage("cgdata/megu223", "cgdata/megu223.png");
-		res.loadImage("cgdata/megu311", "cgdata/megu311.png");
-		res.loadImage("cgdata/megu312", "cgdata/megu312.png");
-		res.loadImage("cgdata/megu313", "cgdata/megu313.png");
-		res.loadImage("cgdata/megu321", "cgdata/megu321.png");
-		res.loadImage("cgdata/megu322", "cgdata/megu322.png");
-		res.loadImage("cgdata/megu323", "cgdata/megu323.png");
-		
-		res.loadImage("cgdata/mesi111", "cgdata/mesi111.png");
-
-		res.loadImage("cgdata/sino111", "cgdata/sino111.png");
-		res.loadImage("cgdata/sino112", "cgdata/sino112.png");
-		res.loadImage("cgdata/sino113", "cgdata/sino113.png");
-		res.loadImage("cgdata/sino121", "cgdata/sino121.png");
-		res.loadImage("cgdata/sino122", "cgdata/sino122.png");
-		res.loadImage("cgdata/sino123", "cgdata/sino123.png");
-		res.loadImage("cgdata/sino211", "cgdata/sino211.png");
-		res.loadImage("cgdata/sino212", "cgdata/sino212.png");
-		res.loadImage("cgdata/sino213", "cgdata/sino213.png");
-		res.loadImage("cgdata/sino221", "cgdata/sino221.png");
-		res.loadImage("cgdata/sino222", "cgdata/sino222.png");
-		res.loadImage("cgdata/sino223", "cgdata/sino223.png");
-		res.loadImage("cgdata/sino224", "cgdata/sino224.png");
-		res.loadImage("cgdata/sino311", "cgdata/sino311.png");
-		res.loadImage("cgdata/sino312", "cgdata/sino312.png");
-		res.loadImage("cgdata/sino313", "cgdata/sino313.png");
-		res.loadImage("cgdata/sino321", "cgdata/sino321.png");
-		res.loadImage("cgdata/sino322", "cgdata/sino322.png");
-		res.loadImage("cgdata/sino323", "cgdata/sino323.png");
-		res.loadImage("cgdata/sino411", "cgdata/sino411.png");
-		res.loadImage("cgdata/sino412", "cgdata/sino412.png");
-		res.loadImage("cgdata/sino413", "cgdata/sino413.png");
-		res.loadImage("cgdata/sino421", "cgdata/sino421.png");
-		res.loadImage("cgdata/sino422", "cgdata/sino422.png");
-		res.loadImage("cgdata/sino423", "cgdata/sino423.png");
-		
-		res.loadImage("cgdata/title001", "cgdata/title001.jpg");
-		res.loadImage("cgdata/event1", "cgdata/event1.jpg");
-		
-//		res.loadImage("wav/a5_04105", "wav/a5_04105.wav");
-//		res.loadImage("wav/a5_04107", "wav/a5_04107.wav");
-//		res.loadImage("wav/a5_04108", "wav/a5_04108.wav");
-//		res.loadImage("wav/a5_04121", "wav/a5_04121.wav");
-//		res.loadImage("wav/a5_10314", "wav/a5_10314.wav");
-		
-		res.loadImage("rule/mix", "rule/mix.png");
-		res.loadImage("rule/wipe", "rule/wipe.png");
+		if (!MarikaFile.USE_LAZY_LOAD) {
+			res.loadImage("cgdata/bg001", "cgdata/bg001.jpg");
+			res.loadImage("cgdata/bg002", "cgdata/bg002.jpg");
+			res.loadImage("cgdata/bg003", "cgdata/bg003.jpg");
+			
+			res.loadImage("cgdata/megu111", "cgdata/megu111.png");
+			res.loadImage("cgdata/megu112", "cgdata/megu112.png");
+			res.loadImage("cgdata/megu113", "cgdata/megu113.png");
+			res.loadImage("cgdata/megu121", "cgdata/megu121.png");
+			res.loadImage("cgdata/megu122", "cgdata/megu122.png");
+			res.loadImage("cgdata/megu123", "cgdata/megu123.png");
+			res.loadImage("cgdata/megu211", "cgdata/megu211.png");
+			res.loadImage("cgdata/megu212", "cgdata/megu212.png");
+			res.loadImage("cgdata/megu213", "cgdata/megu213.png");
+			res.loadImage("cgdata/megu221", "cgdata/megu221.png");
+			res.loadImage("cgdata/megu222", "cgdata/megu222.png");
+			res.loadImage("cgdata/megu223", "cgdata/megu223.png");
+			res.loadImage("cgdata/megu311", "cgdata/megu311.png");
+			res.loadImage("cgdata/megu312", "cgdata/megu312.png");
+			res.loadImage("cgdata/megu313", "cgdata/megu313.png");
+			res.loadImage("cgdata/megu321", "cgdata/megu321.png");
+			res.loadImage("cgdata/megu322", "cgdata/megu322.png");
+			res.loadImage("cgdata/megu323", "cgdata/megu323.png");
+			
+			res.loadImage("cgdata/mesi111", "cgdata/mesi111.png");
+	
+			res.loadImage("cgdata/sino111", "cgdata/sino111.png");
+			res.loadImage("cgdata/sino112", "cgdata/sino112.png");
+			res.loadImage("cgdata/sino113", "cgdata/sino113.png");
+			res.loadImage("cgdata/sino121", "cgdata/sino121.png");
+			res.loadImage("cgdata/sino122", "cgdata/sino122.png");
+			res.loadImage("cgdata/sino123", "cgdata/sino123.png");
+			res.loadImage("cgdata/sino211", "cgdata/sino211.png");
+			res.loadImage("cgdata/sino212", "cgdata/sino212.png");
+			res.loadImage("cgdata/sino213", "cgdata/sino213.png");
+			res.loadImage("cgdata/sino221", "cgdata/sino221.png");
+			res.loadImage("cgdata/sino222", "cgdata/sino222.png");
+			res.loadImage("cgdata/sino223", "cgdata/sino223.png");
+			res.loadImage("cgdata/sino224", "cgdata/sino224.png");
+			res.loadImage("cgdata/sino311", "cgdata/sino311.png");
+			res.loadImage("cgdata/sino312", "cgdata/sino312.png");
+			res.loadImage("cgdata/sino313", "cgdata/sino313.png");
+			res.loadImage("cgdata/sino321", "cgdata/sino321.png");
+			res.loadImage("cgdata/sino322", "cgdata/sino322.png");
+			res.loadImage("cgdata/sino323", "cgdata/sino323.png");
+			res.loadImage("cgdata/sino411", "cgdata/sino411.png");
+			res.loadImage("cgdata/sino412", "cgdata/sino412.png");
+			res.loadImage("cgdata/sino413", "cgdata/sino413.png");
+			res.loadImage("cgdata/sino421", "cgdata/sino421.png");
+			res.loadImage("cgdata/sino422", "cgdata/sino422.png");
+			res.loadImage("cgdata/sino423", "cgdata/sino423.png");
+			
+			res.loadImage("cgdata/title001", "cgdata/title001.jpg");
+			res.loadImage("cgdata/event1", "cgdata/event1.jpg");
+			
+	//		res.loadImage("wav/a5_04105", "wav/a5_04105.wav");
+	//		res.loadImage("wav/a5_04107", "wav/a5_04107.wav");
+	//		res.loadImage("wav/a5_04108", "wav/a5_04108.wav");
+	//		res.loadImage("wav/a5_04121", "wav/a5_04121.wav");
+	//		res.loadImage("wav/a5_10314", "wav/a5_10314.wav");
+			
+			res.loadImage("rule/mix", "rule/mix.png");
+			res.loadImage("rule/wipe", "rule/wipe.png");
+		}
 		
 		MarikaLog.traceMemory("MarikaMainWin::onCreate viewImage " + (viewImage != null));
 		MarikaLog.traceMemory("MarikaMainWin::onCreate mixedImage " + (mixedImage != null));
