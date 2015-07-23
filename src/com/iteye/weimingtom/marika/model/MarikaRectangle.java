@@ -28,6 +28,13 @@ public class MarikaRectangle {
     	this.height = height;
     }
     
+    public void copyRect(MarikaRectangle rect) {
+    	this.x = rect.x;
+    	this.y = rect.y;
+    	this.width = rect.width;
+    	this.height = rect.height;
+    }
+    
     public MarikaRectangle intersection(MarikaRectangle r) {
 		int tx1 = this.x;
 		int ty1 = this.y;

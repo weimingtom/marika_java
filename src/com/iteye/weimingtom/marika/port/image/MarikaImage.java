@@ -37,7 +37,13 @@ public class MarikaImage {
 		if (mImage == null) {
 			mImage = new BufferedImage(file.mImage.getWidth(), file.mImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		} else {
-			mImage = new BufferedImage(mImage.getWidth(), mImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			//FIXME:允许同一内存位图加载多个文件，效果是叠加的
+			//mImage = new BufferedImage(mImage.getWidth(), mImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			MarikaRectangle rect = new MarikaRectangle(0, 0, mImage.getWidth(), mImage.getHeight());
+			rect = rect.intersection(new MarikaRectangle(ox, oy, file.mImage.getWidth(), file.mImage.getHeight()));
+			int[] pixcels = new int[rect.width * rect.height];
+			mImage.setRGB(rect.x, rect.y, rect.width, rect.height, 
+					pixcels, 0, rect.width);
 		}
 		MarikaLog.trace("MarikaImage::loadFile -> file.bitmap == " + file.mImage);
 		Graphics g = mImage.getGraphics();
@@ -59,10 +65,15 @@ public class MarikaImage {
 	}
 	
 	public void clear() {
-		Graphics g = mImage.getGraphics();
-		g.setColor(new Color(0, 0, 0, 0));
-		g.fillRect(0, 0, mImage.getWidth(), mImage.getHeight());
-		g.dispose();
+//		Graphics g = mImage.getGraphics();
+//		g.setColor(new Color(0, 0, 0, 0));
+//		g.fillRect(0, 0, mImage.getWidth(), mImage.getHeight());
+//		g.dispose();
+		//FIXME:
+		MarikaRectangle rect = new MarikaRectangle(0, 0, mImage.getWidth(), mImage.getHeight());
+		int[] pixcels = new int[rect.width * rect.height];
+		mImage.setRGB(rect.x, rect.y, rect.width, rect.height, 
+				pixcels, 0, rect.width);
 	}
 
 	public boolean loadImage(String name, int ox, int oy) {

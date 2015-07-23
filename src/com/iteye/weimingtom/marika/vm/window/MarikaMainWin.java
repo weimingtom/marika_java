@@ -101,11 +101,11 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 	}
 	
 	private static final MarikaRectangle[] POSITION = {
-		new MarikaRectangle(0, 0, 0, 0),
-	    new MarikaRectangle(0, 0, MarikaConfig.WindowWidth / 2, MarikaConfig.WindowHeight),
-	    new MarikaRectangle(MarikaConfig.WindowWidth / 2, 0, MarikaConfig.WindowWidth / 2, MarikaConfig.WindowHeight),
-	    new MarikaRectangle(0, 0, MarikaConfig.WindowWidth, MarikaConfig.WindowHeight),
-	    new MarikaRectangle(MarikaConfig.WindowWidth / 4, 0, MarikaConfig.WindowWidth / 2, MarikaConfig.WindowHeight),
+		new MarikaRectangle(0, 0, 0, 0), //None = 0;
+	    new MarikaRectangle(0, 0, MarikaConfig.WindowWidth / 2, MarikaConfig.WindowHeight), //Left = 1;
+	    new MarikaRectangle(MarikaConfig.WindowWidth / 2, 0, MarikaConfig.WindowWidth / 2, MarikaConfig.WindowHeight), //Right = 2;
+	    new MarikaRectangle(0, 0, MarikaConfig.WindowWidth, MarikaConfig.WindowHeight), //Both = 3;
+	    new MarikaRectangle(MarikaConfig.WindowWidth / 4, 0, MarikaConfig.WindowWidth / 2, MarikaConfig.WindowHeight), //Center = 4;
 	};
 	
 	private MarikaFont hFont = new MarikaFont();
@@ -755,7 +755,7 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 			}
 		}
 		overlapFlags |= pos;
-		overlapBounds = POSITION[overlapFlags];
+		overlapBounds.copyRect(POSITION[overlapFlags]);
 		overlapShow = true;
 		MarikaLog.trace("MarikaMainWin::showOverlapLayer Invalidate == " + POSITION[pos]);
 		invalidate(POSITION[pos]);
@@ -771,7 +771,7 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 			}
 		}
 		overlapFlags &= ~pos;
-		overlapBounds = POSITION[overlapFlags];
+		overlapBounds.copyRect(POSITION[overlapFlags]);
 		if (overlapFlags == None)
 			overlapShow = false;
 		invalidate(POSITION[pos]);
