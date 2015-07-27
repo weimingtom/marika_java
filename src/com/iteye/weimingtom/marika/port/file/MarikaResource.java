@@ -113,16 +113,28 @@ public class MarikaResource {
 			ZipFile zipFile = null;
 			try {
 				File file = new File(ZIPFILE);
-				if (file.exists() && file.canRead()) {
+				if (file.isFile() && file.canRead()) {
 					zipFile = new ZipFile(ZIPFILE);
 					ZipEntry entry = zipFile.getEntry(path);
 					if (entry != null) {
 						instr = zipFile.getInputStream(entry);
 					} else {
-						instr = new FileInputStream(WORKPATH + File.separator + path);
+						String filename = WORKPATH + File.separator + path;
+						File filetest = new File(filename);
+						if (filetest.isFile() && filetest.canRead()) {
+							instr = new FileInputStream(filename);
+						} else {
+							return null;
+						}
 					}
 				} else {
-					instr = new FileInputStream(WORKPATH + File.separator + path);
+					String filename = WORKPATH + File.separator + path;
+					File filetest = new File(filename);
+					if (filetest.isFile() && filetest.canRead()) {
+						instr = new FileInputStream(filename);
+					} else {
+						return null;
+					}
 				}
 				return ImageIO.read(instr);
 			} catch (IOException e) {

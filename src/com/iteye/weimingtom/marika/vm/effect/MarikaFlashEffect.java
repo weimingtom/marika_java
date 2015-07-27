@@ -10,6 +10,18 @@ public class MarikaFlashEffect extends MarikaEffect {
 	
 	@Override 
 	public boolean step() {
-		return false;
+		switch (EffectCnt++) {
+		case 0: 
+			Window.getWindow().extTextOutOpaque(0xffffff, EffectRect);
+			break;
+
+		case 1:
+			Window.repaintView(EffectRect);
+			break;
+
+		default:
+			return false;
+		}
+		return true;
 	}
 }

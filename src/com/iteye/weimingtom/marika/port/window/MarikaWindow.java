@@ -1,5 +1,6 @@
 package com.iteye.weimingtom.marika.port.window;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -88,7 +89,7 @@ public class MarikaWindow extends Panel implements Runnable, KeyListener,
 		bufImage = this.createImage(canvasWidth, canvasHeight);
 		bufGraph = bufImage.getGraphics();
 		bufGraph.clearRect(0, 0, canvasWidth, canvasHeight);
-		drawThread = new Thread(this);
+		drawThread = new Thread(this, "MarikaWindow");
 		drawThread.start();	
 	}
 	
@@ -312,5 +313,36 @@ public class MarikaWindow extends Panel implements Runnable, KeyListener,
 			result = new MarikaPoint(rx, ry);
 		}
 		return result;
+	}
+	
+	// ==================================
+	// 20150726
+	
+	public void draw(MarikaImage image, int x, int y, int w, int h, int ox, int oy) {
+		this.getBufGraph().drawImage(image.mImage, 
+			ox, oy, ox + w, oy + h, 
+			 x,  y,  x + w,  y + h, 
+			null);
+	}
+	
+	public void draw(MarikaImage image, MarikaRectangle rect, MarikaPoint point) {
+		int x = rect.x;
+		int y = rect.y;
+		int ox = point.x;
+		int oy = point.y;
+		int w = rect.width;
+		int h = rect.height;
+		this.getBufGraph().drawImage(image.mImage, 
+			ox, oy, ox + w, oy + h, 
+			 x,  y,  x + w,  y + h, 
+			null);
+	}
+	
+	//dc.SetBkColor(RGB(0, 0, 0));
+	//dc.ExtTextOut(0, 0, ETO_OPAQUE, &rect, 0, 0, NULL);
+	public void extTextOutOpaque(int color, MarikaRectangle rect) {
+		this.getBufGraph().setColor(new Color(color));
+		this.getBufGraph().fillRect(rect.x, rect.y, 
+			rect.width, rect.height);
 	}
 }

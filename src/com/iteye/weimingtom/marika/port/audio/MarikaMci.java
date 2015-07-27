@@ -1,8 +1,12 @@
 package com.iteye.weimingtom.marika.port.audio;
 
+import com.iteye.weimingtom.marika.port.file.MarikaResource;
+
 public class MarikaMci {
-	public MarikaMci() {
-		
+	protected MarikaResource mRes;
+	
+	public MarikaMci(MarikaResource res) {
+		this.mRes = res;
 	}
 	
 	public boolean open() {

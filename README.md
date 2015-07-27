@@ -3,3 +3,7 @@ Porting Adventure Game Programming (アドベンチャーゲームプログラ�
 
 ## NOTICE: 
 See https://github.com/weimingtom/FastFireFrame_preview
+
+## History:  
+20150726: File exist checking; Shake and flash efect; Play wav file.     
+

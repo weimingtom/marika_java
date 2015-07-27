@@ -112,13 +112,13 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 	private int musicMode;
 	
 	private MarikaMci music;
-	private MarikaCDAudio cdaudio = new MarikaCDAudio();
+	private MarikaCDAudio cdaudio;
 	private int musicNo;
-	private MarikaWaveOut wave = new MarikaWaveOut();
+	private MarikaWaveOut wave;
 	
 	private MarikaParams loadParam = new MarikaParams();
 
-	private MarikaAction mAction;
+	private MarikaAction mAction = new MarikaAction();
 	private MarikaAction nopAction = new MarikaAction();
 	private MarikaScriptAction scriptAction;
 	private MarikaGameLoadAction gameLoadAction = new MarikaGameLoadAction(); 
@@ -351,6 +351,9 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 		overlapLayer = new MarikaImage(this.res, 0, 0);
 		mixImage = new MarikaImage(this.res, 0, 0);
 		maskImage = new MarikaImage(this.res, 0, 0);
+		
+		cdaudio = new MarikaCDAudio(this.res);
+		wave = new MarikaWaveOut(this.res);
 		
 		this.mAction = nopAction;
 		this.scriptAction = new MarikaScriptAction(res);
@@ -703,13 +706,15 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 	
 	public void selectMenu(int index, boolean select) {
 		if (index >= 0) {
+			//FIXME:
 			menuBuffer[index].color = select? MarikaConfig.RedPixel: MarikaConfig.WhitePixel;
 			MarikaRectangle r = new MarikaRectangle(
 				menuRect.x + MENU_FRAME_WIDTH,
 				menuRect.y + MENU_FRAME_HEIGHT + (MENU_ITEM_HEIGHT + MENU_ITEM_SPACE) * index,
 				menuRect.width - MENU_FRAME_WIDTH * 2,
-				/*MarikaConfig.MessageFont*/MENU_ITEM_HEIGHT
+				/*MarikaConfig.MessageFont*/MENU_ITEM_HEIGHT + 5
 			);
+			//FIXME: more 5px, i don't know why some white pixels appear in menu text.
 			mixing(r, menuItem(index));
 			copyAndRepaint(r);
 		}
@@ -869,6 +874,7 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 							menuRect.x + MENU_FRAME_WIDTH,
 							menuRect.y + MENU_FRAME_HEIGHT + (MENU_ITEM_HEIGHT + MENU_ITEM_SPACE) * i,
 							menuBuffer[i].text, menuBuffer[i].color);
+						MarikaLog.trace("-->color:0x" + Integer.toHexString(menuBuffer[i].color) + "-->" + menuBuffer[i].text);
 					}
 				}
 			}
@@ -982,6 +988,7 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 		menuBuffer[menuCount].text = str;
 		menuBuffer[menuCount].anser = anser;
 		menuBuffer[menuCount].length = n;
+		//FIXME:
 		menuBuffer[menuCount].color = MarikaConfig.WhitePixel;
 		menuCount++;
 	}
@@ -1064,7 +1071,8 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 			dataTitle[index].color = select? MarikaConfig.RedPixel: MarikaConfig.WhitePixel;
 			int y = index * SAVE_ITEM_INTERVAL + SAVE_ITEM_INTERVAL;
 			MarikaRectangle rect = new MarikaRectangle(
-				SAVE_X, SAVE_Y + y, SAVE_W, SAVE_ITEM_HEIGHT);
+				SAVE_X, SAVE_Y + y, SAVE_W, SAVE_ITEM_HEIGHT + 5);
+			//FIXME: more 5px, i don't know why some white pixels appear in menu text.
 			mixing(rect, saveItem(index));
 			copyAndRepaint(rect);
 		}
