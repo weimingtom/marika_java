@@ -73,16 +73,16 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 	private static final int MENU_ITEM_SPACE = 20;
 	private static final int MENU_ITEM_HEIGHT = MarikaConfig.MessageFont;
 
-	private static final int SAVE_ITEM_HEIGHT = 32;
+	private static final int SAVE_ITEM_HEIGHT = MarikaConfig.MessageFont * 2; // 32;
 	private static final int SAVE_ITEM_SPACE = 4;
 	private static final int SAVE_ITEM_INTERVAL = SAVE_ITEM_HEIGHT + SAVE_ITEM_SPACE;
-	private static final int SAVE_W = 400;
-	private static final int SAVE_H = SAVE_ITEM_INTERVAL * MarikaParams.PARAMS_MAX_SAVE + SAVE_ITEM_HEIGHT;
-	private static final int SAVE_X = (MarikaConfig.WindowWidth - SAVE_W) / 2;
-	private static final int SAVE_Y = (MarikaConfig.WindowHeight - SAVE_H) / 2;
-	private static final int SAVE_TEXT_OFFSET_X = SAVE_X + 10;
-	private static final int SAVE_TEXT_OFFSET_Y = SAVE_Y + 8;
-	private static final int SAVE_TITLE_WIDTH = 72;
+	private static final int SAVE_W = MSG_W;//400; //整体宽度
+	private static final int SAVE_H = SAVE_ITEM_INTERVAL * MarikaParams.PARAMS_MAX_SAVE + SAVE_ITEM_HEIGHT; //整体高度
+	private static final int SAVE_X = (MarikaConfig.WindowWidth - SAVE_W) / 2; //整体居中
+	private static final int SAVE_Y = (MarikaConfig.WindowHeight - SAVE_H) / 2; //整体居中
+	private static final int SAVE_TEXT_OFFSET_X = SAVE_X + 10; //存档标题x坐标
+	private static final int SAVE_TEXT_OFFSET_Y = SAVE_Y + 12;//8;  //存档标题y坐标
+	private static final int SAVE_TITLE_WIDTH = MarikaConfig.MessageFont * 4; //72; //存档标题宽度
 
 	private static final int TextMessage = 1 << 0;
 	private static final int TextWaitMark = 1 << 1;
@@ -134,6 +134,18 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 	private int overlapFlags;
 	private boolean textDisplay;
 	private boolean waitMarkShowing;
+	
+	//-----------------------------------
+	//FIXME:new added
+	private static final int SETTING_W = MarikaConfig.MessageFont * 4;
+	private static final int SETTING_H = MarikaConfig.MessageFont * 2;
+	private static final int SETTING_X = MSG_X + MSG_W - SETTING_W;
+	private static final int SETTING_Y = MSG_Y - SETTING_H;
+	private static final int SETTING_TEXT_OFFSET_X = SETTING_X + 30;
+	private static final int SETTING_TEXT_OFFSET_Y = SETTING_Y + 12;
+	private MarikaRectangle settingRect = new MarikaRectangle(SETTING_X, SETTING_Y, SETTING_W, SETTING_H);
+	//
+	//-----------------------------------
 	
 	private MarikaRectangle invalidRect = new MarikaRectangle(0, 0, 0, 0); // 无效区域
 	private MarikaRectangle textRect = new MarikaRectangle(MSG_X, MSG_Y, MSG_W, MSG_H);
@@ -311,6 +323,11 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 	}
 
 	@Override 
+	public void onRButtonDown(MarikaPoint point) {
+		mAction.onActionRButtonDown(point);
+	}
+		
+	@Override 
 	public void onMouseMove(MarikaPoint point) {
 		mAction.onActionMouseMove(point);
 	}
@@ -359,6 +376,9 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 		this.scriptAction = new MarikaScriptAction(res);
 		for (int i = 0; i < menuBuffer.length; i++) {
 			menuBuffer[i] = new MarikaMenuItem();
+		}
+		for (int i = 0; i < dataTitle.length; i++) {
+			dataTitle[i] = new MarikaDataTitle();
 		}
 		
 		curX = curY = 0;
@@ -723,7 +743,8 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 	public void showMessageWindow() {
 		textDisplay = true;
 		textShow = true;
-		invalidate(textRect);
+		//FIXME:
+		invalidate(textRect.union(settingRect));
 		updateView();
 	}
 	
@@ -735,7 +756,7 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 		textDisplay = false;
 		if (textShow) {
 			textShow = false;
-			invalidate(textRect);
+			invalidate(textRect.union(settingRect));
 			if (update)
 				updateView();
 		}
@@ -744,7 +765,7 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 	public void flipMessageWindow() {
 		if (textDisplay) {
 			textShow = textShow? false: true;
-			invalidate(textRect);
+			invalidate(textRect.union(settingRect));
 			updateView();
 		}
 	}
@@ -830,7 +851,7 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 			if ((flags & SaveTitle) != 0) {
 				mixedImage.drawFrameRect(new MarikaRectangle(SAVE_X, SAVE_Y, SAVE_TITLE_WIDTH, SAVE_ITEM_HEIGHT), 0xffffff);
 				mixedImage.drawText(hFont, SAVE_TEXT_OFFSET_X, SAVE_TEXT_OFFSET_Y,
-					isSaveMenu? "存档": "装入", MarikaConfig.WhitePixel);
+					isSaveMenu? "储存"/*"存档"*/: "读取"/*"装入"*/, MarikaConfig.WhitePixel);
 			}
 			for (int i = 0; i < MarikaParams.PARAMS_MAX_SAVE; i++) {
 				if ((flags & saveItem(i)) != 0) {
@@ -847,6 +868,11 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 					//FIXME:
 					MarikaLog.trace("MarikaMainWin::mixing: TextRect == " + textRect.x + " " + textRect.y + " " + textRect.width + " " + textRect.height);
 					mixedImage.drawFrameRect(textRect, 0xffffff);
+					//FIXME:
+					mixedImage.drawFrameRect(settingRect, 0xffffff);
+					mixedImage.drawText(hFont, SETTING_TEXT_OFFSET_X, SETTING_TEXT_OFFSET_Y,
+							"储存", MarikaConfig.WhitePixel);
+					
 					for (int i = 0; i < MarikaConfig.MessageLine; i++) {
 						MarikaLog.trace("MarikaMainWin::mixing DrawText " + msgX(0) + "," + msgY(i) + "," + msgBuffer[i]);
 						mixedImage.drawText(hFont, msgX(0), msgY(i), msgBuffer[i], MarikaConfig.WhitePixel);
@@ -1041,7 +1067,7 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 		}
 		invalidate(saveRect);
 		if (textShow)
-			invalidate(textRect);
+			invalidate(textRect.union(settingRect));
 		if (menuShow)
 			invalidate(menuRect);
 		updateView();
@@ -1051,7 +1077,7 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 		saveShow = false;
 		invalidate(saveRect);
 		if (textShow)
-			invalidate(textRect);
+			invalidate(textRect.union(settingRect));
 		if (menuShow)
 			invalidate(menuRect);
 		updateView();

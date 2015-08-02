@@ -5,7 +5,10 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Menu;
+import java.awt.MenuBar;
 import java.awt.Panel;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -233,14 +236,25 @@ public class MarikaWindow extends Panel implements Runnable, KeyListener,
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (adapter != null) {
-			adapter.onLButtonDown(calcPoint(e.getX(), e.getY()));
+			/**
+			 * @see http://www.coderanch.com/t/388898/java/java/Capturing-click-mouse-AWT
+			 */
+			if (e.getModifiers() == InputEvent.BUTTON1_MASK) {
+				adapter.onLButtonDown(calcPoint(e.getX(), e.getY()));
+			} else if (e.getModifiers() == InputEvent.BUTTON3_MASK) {
+				adapter.onRButtonDown(calcPoint(e.getX(), e.getY()));
+			}
 		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (adapter != null) {
-			adapter.onLButtonUp(calcPoint(e.getX(), e.getY()));
+			if (e.getModifiers() == InputEvent.BUTTON1_MASK) {
+				adapter.onLButtonUp(calcPoint(e.getX(), e.getY()));
+			} else if (e.getModifiers() == InputEvent.BUTTON3_MASK) {
+				adapter.onRButtonUp(calcPoint(e.getX(), e.getY()));
+			} 
 		}
 	}
 

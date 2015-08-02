@@ -6,7 +6,7 @@ import com.iteye.weimingtom.marika.vm.window.MarikaMainWin;
 public class MarikaAction {
 	private void error() {
 		try {
-			throw new RuntimeException("abstract function");
+			throw new RuntimeException("abstract function : " + this.getClass());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

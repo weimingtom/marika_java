@@ -213,6 +213,11 @@ public class MarikaScriptAction extends MarikaAction {
 	}
 	
 	@Override 
+	public void onActionRButtonUp(MarikaPoint point) {
+		
+	}
+	
+	@Override 
 	public void onActionRButtonDown(MarikaPoint point) {
 		switch (status) {
 		case WaitKeyPressed:

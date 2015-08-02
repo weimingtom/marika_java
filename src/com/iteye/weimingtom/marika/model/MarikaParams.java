@@ -1,7 +1,7 @@
 package com.iteye.weimingtom.marika.model;
 
 public class MarikaParams {
-	public static final int PARAMS_MAX_SAVE = 10;
+	public static final int PARAMS_MAX_SAVE = 5;//10;
 	public static final int PARAMS_MAX_VALUES = MarikaConfig.MAX_VALUES;
 	
 	public static final int SHOWCG_BLACKNESS = 0;

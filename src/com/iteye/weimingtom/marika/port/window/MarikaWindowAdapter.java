@@ -21,6 +21,10 @@ public class MarikaWindowAdapter {
 		
 	}
 
+	protected void onRButtonDown(MarikaPoint point) {
+		
+	}
+	
 	protected void onRButtonUp(MarikaPoint point) {
 		
 	}

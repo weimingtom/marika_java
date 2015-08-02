@@ -8,6 +8,7 @@ public interface IWindow {
 	void onLButtonUp(MarikaPoint point);
 	void onLButtonDown(MarikaPoint point);
 	void onRButtonUp(MarikaPoint point);
+	void onRButtonDown(MarikaPoint point);
 	void onMouseMove(MarikaPoint point);
 	boolean onIdle(int count);
 	boolean onCreate();
