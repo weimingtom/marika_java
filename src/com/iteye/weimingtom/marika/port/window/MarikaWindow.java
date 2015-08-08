@@ -5,8 +5,6 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Menu;
-import java.awt.MenuBar;
 import java.awt.Panel;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -17,6 +15,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import com.iteye.weimingtom.marika.model.MarikaConfig;
 import com.iteye.weimingtom.marika.model.MarikaKey;
 import com.iteye.weimingtom.marika.model.MarikaPoint;
 import com.iteye.weimingtom.marika.model.MarikaRectangle;
@@ -205,6 +204,20 @@ public class MarikaWindow extends Panel implements Runnable, KeyListener,
 				adapter.onKeyDown(MarikaKey.DOWN);
 			}
 			break;
+			
+		//-------------------------------------
+		//FIXME: 这是新增的，原来没有，映射到onCommand
+		case KeyEvent.VK_S:
+			if (adapter != null) {
+				adapter.onCommand(0, MarikaConfig.ID_SAVEGAME, this);
+			}
+			break;
+		
+		case KeyEvent.VK_L:
+			if (adapter != null) {
+				adapter.onCommand(0, MarikaConfig.ID_LOADGAME, this);
+			}
+			break;
 		}
 	}
 
@@ -282,8 +295,14 @@ public class MarikaWindow extends Panel implements Runnable, KeyListener,
 		}
 	}
 	
+	//FIXME:未实现
 	public void messageBox(String str) {
 		MarikaLog.trace("NOTE:[messageBox] -> " + str);
+	}
+	//FIXME:未实现
+	public int messageBox(String str, String title, int flag) {
+		MarikaLog.trace("NOTE:[messageBox] -> " + str);
+		return 0;
 	}
 	
 	public void draw(MarikaImage image, MarikaRectangle rect) {

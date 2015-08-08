@@ -40,4 +40,24 @@ public class MarikaConfig {
 	public static final int TimerSleep = 0;
 
 	public static final int IS_TIMEDOUT = (1 << 0);
+	
+	//----------------------
+	//模拟Windows事件
+	public final static int MF_CHECKED = 1;
+	public final static int MF_UNCHECKED = 0;
+	public final static int MF_ENABLED = 2;
+	public final static int MF_DISABLED = 4;
+	public final static int MF_GRAYED = 8;
+	
+	public final static int ID_STOPSCRIPT = 100;
+	public final static int ID_APP_EXIT = 101;
+	public final static int ID_APP_ABOUT = 102;
+	public final static int ID_MUSIC_CD = 103;
+	public final static int ID_MUSIC_OFF = 104;
+	public final static int ID_LOADGAME = 105;
+	public final static int ID_SAVEGAME = 106;
+	
+	public static final int MB_ICONQUESTION = 1;
+	public static final int MB_OKCANCEL = 4;
+	public static final int IDOK = 0;
 }

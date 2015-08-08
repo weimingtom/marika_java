@@ -55,4 +55,8 @@ public class MarikaWindowAdapter {
 	protected void onKeyDown(int key) {
 		
 	}
+	
+	protected void onCommand(int notifyCode, int id, MarikaWindow ctrl) {
+		
+	}
 }

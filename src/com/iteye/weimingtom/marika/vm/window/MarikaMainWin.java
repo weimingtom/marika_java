@@ -314,9 +314,34 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 
 	@Override 
 	public void onLButtonDown(MarikaPoint point) {
-		mAction.onActionLButtonDown(point);
+		//新增，响应存储按钮
+		if (_isHitSettingButton(point)) {
+			this.onCommand(0, MarikaConfig.ID_SAVEGAME, this.getWindow());
+		} else {
+			mAction.onActionLButtonDown(point);
+		}
 	}
 
+	//新增，判断是否点击存储按钮
+	public boolean _isHitSettingButton(MarikaPoint point) {
+		if (saveShow) {
+			return false;
+		} else {
+			if (textShow) {
+				if (point.x < settingRect.x || 
+					point.y < settingRect.y || 
+					point.x >= settingRect.x + settingRect.width || 
+					point.y >= settingRect.y + settingRect.height) {
+					return false;
+				} else {
+					return true;
+				}
+			} else {
+				return false;
+			}
+		}
+	}
+	
 	@Override 
 	public void onRButtonUp(MarikaPoint point) {
 		mAction.onActionRButtonUp(point);
@@ -595,16 +620,100 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 		mAction.onActionTimedOut(id);
 	}
 	
+	@Override
 	public void onCommand(int notifyCode, int id, MarikaWindow ctrl) {
-		
+		switch (id) {
+		case MarikaConfig.ID_APP_EXIT:
+			//FIXME:未实现
+//			SendMessage(WM_CLOSE);
+			break;
+
+		case MarikaConfig.ID_APP_ABOUT:
+			//FIXME:未实现
+//			CAboutDlg().DoModal(IDD_ABOUT, hWnd);
+			break;
+
+		case MarikaConfig.ID_MUSIC_CD:
+			//FIXME:未实现
+			changeMusicMode(MusicCD);
+			break;
+
+		case MarikaConfig.ID_MUSIC_OFF:
+			//FIXME:未实现
+			changeMusicMode(MusicOff);
+			break;
+
+		case MarikaConfig.ID_LOADGAME:
+			//FIXME:未实现
+			if (isLoadOK()) {
+				setAction(MarikaConfig.ActionGameLoad);
+			}
+			break;
+
+		case MarikaConfig.ID_SAVEGAME:
+			//FIXME:未实现
+			if (isSaveOK()) {
+				setAction(MarikaConfig.ActionGameSave);
+			}
+			break;
+
+		case MarikaConfig.ID_STOPSCRIPT:
+			//FIXME:未实现
+			if (isSaveOK() && this.getWindow().messageBox("您确定要停止游戏吗？", 
+				MarikaConfig.ApplicationTitle,
+				MarikaConfig.MB_ICONQUESTION | MarikaConfig.MB_OKCANCEL) == 
+				MarikaConfig.IDOK) {
+				scriptAction.abort();
+			}
+			break;
+
+		default:
+			break;
+		}
 	}
 	
+	private void checkMenuItem(Object hMenu, int id, int status) {
+		
+	}
+	private void enableMenuItem(Object hMenu, int id, int status) {
+		
+	}
+	//FIXME: 这个回调还没有实现
 	public void onInitSubMenu(Object hMenu, int id) {
-		
+		switch (id) {
+		case MarikaConfig.ID_MUSIC_CD:
+			checkMenuItem(hMenu, id, musicMode == MusicCD? MarikaConfig.MF_CHECKED: MarikaConfig.MF_UNCHECKED);
+			break;
+
+		case MarikaConfig.ID_MUSIC_OFF:
+			checkMenuItem(hMenu, id, musicMode == MusicOff? MarikaConfig.MF_CHECKED: MarikaConfig.MF_UNCHECKED);
+			break;
+
+		case MarikaConfig.ID_LOADGAME:
+			enableMenuItem(hMenu, id, isLoadOK()? MarikaConfig.MF_ENABLED: (MarikaConfig.MF_DISABLED | MarikaConfig.MF_GRAYED));
+			break;
+
+		case MarikaConfig.ID_SAVEGAME:
+			enableMenuItem(hMenu, id, isSaveOK()? MarikaConfig.MF_ENABLED: (MarikaConfig.MF_DISABLED | MarikaConfig.MF_GRAYED));
+			break;
+
+		case MarikaConfig.ID_STOPSCRIPT:
+			enableMenuItem(hMenu, id, isSaveOK()? MarikaConfig.MF_ENABLED: (MarikaConfig.MF_DISABLED | MarikaConfig.MF_GRAYED));
+			break;
+		}
 	}
 	
+	//FIXME: 这个回调还没有实现
+	private final static int MCI_NOTIFY_SUCCESSFUL = 0;
 	public void onMciNotify(int flag, int id) {
-		
+		if (flag == MCI_NOTIFY_SUCCESSFUL) {
+			if (music != null && music.GetId() == id) {
+				mAction.onActionMusicDone(musicNo);
+			} else if (wave.GetId() == id) {
+				wave.stop();
+				mAction.onActionWaveDone();
+			}
+		}
 	}
 	
 	public void changeMusicMode(int mode) {

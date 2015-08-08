@@ -32,4 +32,8 @@ public class MarikaMci {
 	public boolean stop() {
 		return false;
 	}
+	
+	public int GetId() {
+		return 0;
+	}
 }
