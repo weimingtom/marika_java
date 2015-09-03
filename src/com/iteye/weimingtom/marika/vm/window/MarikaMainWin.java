@@ -84,6 +84,8 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 	private static final int SAVE_TEXT_OFFSET_Y = SAVE_Y + 12;//8;  //存档标题y坐标
 	private static final int SAVE_TITLE_WIDTH = MarikaConfig.MessageFont * 4; //72; //存档标题宽度
 
+	//--------------------
+	//flags
 	private static final int TextMessage = 1 << 0;
 	private static final int TextWaitMark = 1 << 1;
 	private static final int MenuFrame = 1 << 2;
@@ -99,6 +101,9 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 	private static int saveItem(int n) { 
 		return 1 << (SaveItemFirst + n); 
 	}
+	
+	//extFlags
+	//--------------------
 	
 	private static final MarikaRectangle[] POSITION = {
 		new MarikaRectangle(0, 0, 0, 0), //None = 0;
@@ -137,14 +142,47 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 	
 	//-----------------------------------
 	//FIXME:new added
-	private static final int SETTING_W = MarikaConfig.MessageFont * 4;
-	private static final int SETTING_H = MarikaConfig.MessageFont * 2;
-	private static final int SETTING_X = MSG_X + MSG_W - SETTING_W;
-	private static final int SETTING_Y = MSG_Y - SETTING_H;
-	private static final int SETTING_TEXT_OFFSET_X = SETTING_X + 30;
-	private static final int SETTING_TEXT_OFFSET_Y = SETTING_Y + 12;
-	private MarikaRectangle settingRect = new MarikaRectangle(SETTING_X, SETTING_Y, SETTING_W, SETTING_H);
-	//
+	private static final int CONTEXT_MENU_W = MarikaConfig.MessageFont * 4;
+	private static final int CONTEXT_MENU_H = MarikaConfig.MessageFont * 2;
+	private static final int CONTEXT_MENU_X = MSG_X + MSG_W - CONTEXT_MENU_W;
+	private static final int CONTEXT_MENU_Y = MSG_Y - CONTEXT_MENU_H;
+	private static final int CONTEXT_MENU_TEXT_OFFSET_X = CONTEXT_MENU_X + 30;
+	private static final int CONTEXT_MENU_TEXT_OFFSET_Y = CONTEXT_MENU_Y + 12;
+	private MarikaRectangle contextMenuRect = new MarikaRectangle(CONTEXT_MENU_X, CONTEXT_MENU_Y, CONTEXT_MENU_W, CONTEXT_MENU_H);
+	private int contextMenuColor = MarikaConfig.WhitePixel;
+	
+	public void selectContextMenu(int index, boolean select) {
+		if (index >= 0) {
+			contextMenuColor = select? MarikaConfig.RedPixel: MarikaConfig.WhitePixel;
+			//NOTE: when saveShow == true,
+			//the screen will be repaint two times.
+			//by weimingtom
+			if (!saveShow) {
+				mixing(contextMenuRect, TextMessage, 0xffffffff);
+				copyAndRepaint(contextMenuRect);
+			}
+		}
+	}
+	
+	public int getContextMenuSelect(MarikaPoint point) {
+		if (saveShow) {
+			return -1;
+		} else {
+			if (textShow) {
+				if (point.x < contextMenuRect.x || 
+					point.y < contextMenuRect.y || 
+					point.x >= contextMenuRect.x + contextMenuRect.width || 
+					point.y >= contextMenuRect.y + contextMenuRect.height) {
+					return -1;
+				} else {
+					return 0;
+				}
+			} else {
+				return -1;
+			}
+		}
+	}
+	
 	//-----------------------------------
 	
 	private MarikaRectangle invalidRect = new MarikaRectangle(0, 0, 0, 0); // 无效区域
@@ -314,32 +352,7 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 
 	@Override 
 	public void onLButtonDown(MarikaPoint point) {
-		//新增，响应存储按钮
-		if (_isHitSettingButton(point)) {
-			this.onCommand(0, MarikaConfig.ID_SAVEGAME, this.getWindow());
-		} else {
-			mAction.onActionLButtonDown(point);
-		}
-	}
-
-	//新增，判断是否点击存储按钮
-	public boolean _isHitSettingButton(MarikaPoint point) {
-		if (saveShow) {
-			return false;
-		} else {
-			if (textShow) {
-				if (point.x < settingRect.x || 
-					point.y < settingRect.y || 
-					point.x >= settingRect.x + settingRect.width || 
-					point.y >= settingRect.y + settingRect.height) {
-					return false;
-				} else {
-					return true;
-				}
-			} else {
-				return false;
-			}
-		}
+		mAction.onActionLButtonDown(point);
 	}
 	
 	@Override 
@@ -810,7 +823,7 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 		if (waitMarkShowing) {
 			waitMarkShowing = false;
 			if (textShow) {
-				mixing(waitMarkRect, TextWaitMark);
+				mixing(waitMarkRect, TextWaitMark, 0xffffffff);
 				copyAndRepaint(waitMarkRect);
 			}
 		}
@@ -844,7 +857,7 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 				/*MarikaConfig.MessageFont*/MENU_ITEM_HEIGHT + 5
 			);
 			//FIXME: more 5px, i don't know why some white pixels appear in menu text.
-			mixing(r, menuItem(index));
+			mixing(r, menuItem(index), 0xffffffff);
 			copyAndRepaint(r);
 		}
 	}
@@ -853,7 +866,7 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 		textDisplay = true;
 		textShow = true;
 		//FIXME:
-		invalidate(textRect.union(settingRect));
+		invalidate(textRect.union(contextMenuRect));
 		updateView();
 	}
 	
@@ -865,7 +878,7 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 		textDisplay = false;
 		if (textShow) {
 			textShow = false;
-			invalidate(textRect.union(settingRect));
+			invalidate(textRect.union(contextMenuRect));
 			if (update)
 				updateView();
 		}
@@ -874,7 +887,7 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 	public void flipMessageWindow() {
 		if (textDisplay) {
 			textShow = textShow? false: true;
-			invalidate(textRect.union(settingRect));
+			invalidate(textRect.union(contextMenuRect));
 			updateView();
 		}
 	}
@@ -943,10 +956,10 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 	
 	
 	public void mixing(MarikaRectangle rect) {
-		mixing(rect, 0xffffffff);
+		mixing(rect, 0xffffffff, 0xffffffff);
 	}
 	
-	public void mixing(MarikaRectangle rect, int flags) {
+	public void mixing(MarikaRectangle rect, int flags, int extFlags) {
 		if (backShow) {
 			mixedImage.copy(backLayer, rect);
 		} else {
@@ -978,9 +991,9 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 					MarikaLog.trace("MarikaMainWin::mixing: TextRect == " + textRect.x + " " + textRect.y + " " + textRect.width + " " + textRect.height);
 					mixedImage.drawFrameRect(textRect, 0xffffff);
 					//FIXME:
-					mixedImage.drawFrameRect(settingRect, 0xffffff);
-					mixedImage.drawText(hFont, SETTING_TEXT_OFFSET_X, SETTING_TEXT_OFFSET_Y,
-							"储存", MarikaConfig.WhitePixel);
+					mixedImage.drawFrameRect(contextMenuRect, contextMenuColor);
+					mixedImage.drawText(hFont, CONTEXT_MENU_TEXT_OFFSET_X, CONTEXT_MENU_TEXT_OFFSET_Y,
+							"菜单", contextMenuColor);
 					
 					for (int i = 0; i < MarikaConfig.MessageLine; i++) {
 						MarikaLog.trace("MarikaMainWin::mixing DrawText " + msgX(0) + "," + msgY(i) + "," + msgBuffer[i]);
@@ -1176,7 +1189,7 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 		}
 		invalidate(saveRect);
 		if (textShow)
-			invalidate(textRect.union(settingRect));
+			invalidate(textRect.union(contextMenuRect));
 		if (menuShow)
 			invalidate(menuRect);
 		updateView();
@@ -1186,7 +1199,7 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 		saveShow = false;
 		invalidate(saveRect);
 		if (textShow)
-			invalidate(textRect.union(settingRect));
+			invalidate(textRect.union(contextMenuRect));
 		if (menuShow)
 			invalidate(menuRect);
 		updateView();
@@ -1208,7 +1221,7 @@ public class MarikaMainWin extends MarikaWindowAdapter {
 			MarikaRectangle rect = new MarikaRectangle(
 				SAVE_X, SAVE_Y + y, SAVE_W, SAVE_ITEM_HEIGHT + 5);
 			//FIXME: more 5px, i don't know why some white pixels appear in menu text.
-			mixing(rect, saveItem(index));
+			mixing(rect, saveItem(index), 0xffffffff);
 			copyAndRepaint(rect);
 		}
 	}

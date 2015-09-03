@@ -17,4 +17,7 @@ public interface IWindow {
 	void onKeyDown(int key);
 	void messageBox(String str);
 	void draw(MarikaImage image, MarikaRectangle rect);
+	MarikaPoint getCursorPos();
+	void screenToClient(MarikaPoint point);
+	void setTimer(int idTimer, int uTimeout);
 }

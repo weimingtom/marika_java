@@ -61,6 +61,7 @@ public class MarikaScriptAction extends MarikaAction {
 	protected MarikaScriptData current = new MarikaScriptData();
 	protected int position;
 	protected int status;
+	protected int ContextMenuSelect; //FIXME:added
 	
 	private MarikaResource res;
 	
@@ -147,11 +148,20 @@ public class MarikaScriptAction extends MarikaAction {
 		PlayMode = param1;
 		Params.clear();
 		script_buffer = null;
+		ContextMenuSelect = -1;
 	}
 	
 	@Override 
 	public void onActionPause() {
 		switch (status) {
+		case WaitKeyPressed:
+			//FIXME: added
+			if (ContextMenuSelect >= 0) {
+				mParent.selectContextMenu(ContextMenuSelect, false);
+				ContextMenuSelect = -1;
+			}
+			break;
+		
 		case WaitMenuDone:
 			if (MenuSelect >= 0) {
 				mParent.selectMenu(MenuSelect, false);
@@ -161,17 +171,23 @@ public class MarikaScriptAction extends MarikaAction {
 		}
 	}
 	
-	public MarikaPoint getCursorPos() {
-		//FIXME:
-		return null;
-	}
-	
 	@Override 
 	public void onActionResume() {
 		switch (status) {
+		case WaitKeyPressed: {
+				//FIXME: added
+				MarikaPoint point = mParent.getWindow().getCursorPos();
+				mParent.getWindow().screenToClient(point);
+				ContextMenuSelect = mParent.getContextMenuSelect(point);
+				if (ContextMenuSelect >= 0) {
+					mParent.selectContextMenu(ContextMenuSelect, true);
+				}
+			}
+			break;
+		
 		case WaitMenuDone: {
-				MarikaPoint point = getCursorPos();
-//				Parent.ScreenToClient(point);
+				MarikaPoint point = mParent.getWindow().getCursorPos();
+				mParent.getWindow().screenToClient(point);
 				MenuSelect = mParent.getMenuSelect(point);
 				if (MenuSelect >= 0)
 					mParent.selectMenu(MenuSelect, true);
@@ -193,8 +209,13 @@ public class MarikaScriptAction extends MarikaAction {
 	public void onActionLButtonUp(MarikaPoint point) {
 		switch (status) {
 		case WaitKeyPressed:
-			mParent.hideWaitMark();
-			status = Continue;
+			//FIXME: added
+			if (this.mParent.getContextMenuSelect(point) != -1) {
+				this.mParent.onCommand(0, MarikaConfig.ID_SAVEGAME, this.mParent.getWindow());
+			} else {
+				mParent.hideWaitMark();
+				status = Continue;
+			}
 			break;
 		
 		case WaitMenuDone:
@@ -229,7 +250,18 @@ public class MarikaScriptAction extends MarikaAction {
 	@Override 
 	public void onActionMouseMove(MarikaPoint point) {
 		switch (status) {
-		case WaitMenuDone: {
+		case WaitKeyPressed:{
+				//FIXME:added
+				int contextSel = mParent.getContextMenuSelect(point); 
+				if (contextSel != ContextMenuSelect){
+					mParent.selectContextMenu(ContextMenuSelect, false);
+					ContextMenuSelect = contextSel;
+					mParent.selectContextMenu(ContextMenuSelect, true);					
+				}
+			}
+			break;
+			
+		case WaitMenuDone: {				
 				int sel = mParent.getMenuSelect(point);
 				if (sel != MenuSelect) {
 					mParent.selectMenu(MenuSelect, false);
@@ -493,7 +525,7 @@ public class MarikaScriptAction extends MarikaAction {
 			return Continue;
 		
 		case MkScriptType.SLEEP_CMD:
-			//Parent.SetTimer(MarikaMainWin.TimerSleep, ((SleepCommand)cmd).time * 1000);
+			mParent.getWindow().setTimer(MarikaConfig.TimerSleep, ((SleepCommand)cmd).time * 1000);
 			return WaitTimeOut;
 		
 		case MkScriptType.GOTO_CMD:

@@ -5,7 +5,9 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.MouseInfo;
 import java.awt.Panel;
+import java.awt.Point;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -14,6 +16,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
+import javax.swing.SwingUtilities;
 
 import com.iteye.weimingtom.marika.model.MarikaConfig;
 import com.iteye.weimingtom.marika.model.MarikaKey;
@@ -377,5 +381,25 @@ public class MarikaWindow extends Panel implements Runnable, KeyListener,
 		this.getBufGraph().setColor(new Color(color));
 		this.getBufGraph().fillRect(rect.x, rect.y, 
 			rect.width, rect.height);
+	}
+	
+	public MarikaPoint getCursorPos() {
+		Point pt = MouseInfo.getPointerInfo().getLocation();
+		//System.out.println("--->>>getCursorPos():" + pt);
+		return new MarikaPoint(pt.x, pt.y);
+	}
+	
+	public void screenToClient(MarikaPoint point) {
+		if (point != null) {
+			Point pt = new Point(point.x, point.y);
+			SwingUtilities.convertPointFromScreen(pt, this);
+			point.x = pt.x;
+			point.y = pt.y;
+		}
+	}
+	
+	public void setTimer(int idTimer, int uTimeout) {
+		//FIXME:
+		//call onActionTimedOut
 	}
 }

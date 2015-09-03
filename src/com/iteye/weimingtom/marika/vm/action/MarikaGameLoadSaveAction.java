@@ -114,9 +114,9 @@ public abstract class MarikaGameLoadSaveAction extends MarikaAction {
 	@Override
 	public void onActionTimedOut(int timerId) {
 		switch (timerId) {
-			case MarikaConfig.TimerSleep:
-				Flags |= MarikaConfig.IS_TIMEDOUT;
-				break;
+		case MarikaConfig.TimerSleep:
+			Flags |= MarikaConfig.IS_TIMEDOUT;
+			break;
 		}
 	}
 
