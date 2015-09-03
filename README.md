@@ -5,6 +5,7 @@ Porting Adventure Game Programming (アドベンチャーゲームプログラ�
 See https://github.com/weimingtom/FastFireFrame_preview
 
 ## History:  
+20150904: Context menu button, save to file.  
 20150809: Save button action, showing save/load menu (press S or L key).    
 20150803: Load UI, save button, right click action.    
 20150726: File exist checking; Shake and flash efect; Play wav file.     
