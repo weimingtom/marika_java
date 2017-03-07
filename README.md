@@ -3,6 +3,7 @@ Porting Adventure Game Programming (アドベンチャーゲームプログラ�
 
 ## NOTICE: 
 See https://github.com/weimingtom/FastFireFrame_preview
+**(There is an Android implementation also, see FastFireFrame, but I have no time to migrate it to marika project)**  
 
 ## History:  
 20150904: Context menu button, save to file.  
